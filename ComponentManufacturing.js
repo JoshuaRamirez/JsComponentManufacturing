@@ -7,79 +7,80 @@
 
 $(document).ready(
 
-    function(){
+    function () {
 
-        var HelloWorldFactory = function() {
+        var helloWorldFactory = function () {
 
-            var builder = {
-                buildDateAnnouncement: function() {
+            var builders = {
+                buildDateAnnouncement:function () {
                     var today = Date.today();
                     return "Today is " + today;
                 },
-                buildMessageSender: function() {
-                    function send(message){
-                        document.writeln(message)
-                    }
+                buildMessageSender:function () {
+                    var send = function (message) {
+                        document.writeln(message);
+                    };
                     return {
-                        send: send
+                        send:send
                     };
                 }
             };
 
             var parts = {
-                greeting: "Hello World!",
-                dateAnnouncement: builder.buildDateAnnouncement(),
-                messageSender: builder.buildMessageSender()
+                greeting:"Hello World!",
+                dateAnnouncement:builders.buildDateAnnouncement(),
+                messageSender:builders.buildMessageSender()
             };
 
             var packaging = {
-                makeInterface: function makeInterface (){
+                makeInterface:function () {
                     return {
-                        sayHello: this.sayHello
+                        sayHello:this.sayHello
                     };
                 }
             };
 
             var assemblyLine = {
-                begin: function() {
+                begin:function () {
                     this.product = {};
                     return this;
                 },
-                addGreeting: function () {
+                addGreeting:function () {
                     var product = this.product;
                     product.greeting = parts.greeting;
                     return this;
                 },
-                addDateAnnouncement: function () {
+                addDateAnnouncement:function () {
                     var product = this.product;
                     product.dateAnnouncement = parts.dateAnnouncement;
                     return this;
                 },
-                addMessageSender: function () {
+                addMessageSender:function () {
                     var product = this.product;
                     product.messageSender = parts.messageSender;
                     return this;
                 },
-                configureHelloWorldMessage: function(){
+                configureHelloWorldMessage:function () {
                     var product = this.product;
                     var sender = product.messageSender;
-                    function sayHello(){
+
+                    function sayHello() {
                         sender.send(product.greeting);
                     }
+
                     product.sayHello = sayHello;
                     return this;
                 },
-                configureFancyHelloWorldMessage: function(){
+                configureFancyHelloWorldMessage:function () {
                     var product = this.product;
                     var sender = product.messageSender;
-                    function sayHello(){
+                    this.sayHello = function () {
                         sender.send(product.greeting);
                         sender.send(product.dateAnnouncement);
-                    }
-                    product.sayHello = sayHello;
+                    };
                     return this;
                 },
-                finish: function () {
+                finish:function () {
                     var product = this.product;
                     product = packaging.makeInterface.call(product);
                     this.product = null;
@@ -89,31 +90,31 @@ $(document).ready(
 
             var produceHelloWorld = function () {
                 return assemblyLine
-                        .begin()
-                        .addGreeting()
-                        .addMessageSender()
-                        .configureHelloWorldMessage()
-                        .finish();
+                    .begin()
+                    .addGreeting()
+                    .addMessageSender()
+                    .configureHelloWorldMessage()
+                    .finish();
             };
 
             var produceFancyHelloWorld = function () {
                 return assemblyLine
-                        .begin()
-                        .addGreeting()
-                        .addDateAnnouncement()
-                        .addMessageSender()
-                        .configureFancyHelloWorldMessage()
-                        .finish();
+                    .begin()
+                    .addGreeting()
+                    .addDateAnnouncement()
+                    .addMessageSender()
+                    .configureFancyHelloWorldMessage()
+                    .finish();
             };
 
             return {
-                produceHelloWorld: produceHelloWorld,
-                produceFancyHelloWorld: produceFancyHelloWorld
+                produceHelloWorld:produceHelloWorld,
+                produceFancyHelloWorld:produceFancyHelloWorld
             };
 
         };
 
-        var factory = HelloWorldFactory();
+        var factory = helloWorldFactory();
         var helloWorld = factory.produceFancyHelloWorld();
         helloWorld.sayHello();
     }
