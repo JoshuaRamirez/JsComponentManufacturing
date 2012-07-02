@@ -63,12 +63,9 @@ $(document).ready(
                 configureHelloWorldMessage:function () {
                     var product = this.product;
                     var sender = product.messageSender;
-
-                    function sayHello() {
+                    this.sayHello = function () {
                         sender.send(product.greeting);
-                    }
-
-                    product.sayHello = sayHello;
+                    };
                     return this;
                 },
                 configureFancyHelloWorldMessage:function () {
