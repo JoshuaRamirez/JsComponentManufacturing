@@ -71,7 +71,7 @@ $(document).ready(
                 configureFancyHelloWorldMessage:function () {
                     var product = this.product;
                     var sender = product.messageSender;
-                    this.sayHello = function () {
+                    product.sayHello = function () {
                         sender.send(product.greeting);
                         sender.send(product.dateAnnouncement);
                     };
@@ -80,7 +80,6 @@ $(document).ready(
                 finish:function () {
                     var product = this.product;
                     product = packaging.makeInterface.call(product);
-                    this.product = null;
                     return product;
                 }
             };
